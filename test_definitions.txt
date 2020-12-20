@@ -1,0 +1,19 @@
+enumdef Port
+A:0
+B:1
+C:2
+D:3
+endenumdef
+
+structdef test_struct
+foo/bar
+uint32 a
+int8 b
+endstructdef
+
+structdef test_struct_enum
+bar/foo
+uint32 a
+int8 b
+enum:Port port
+endstructdef
