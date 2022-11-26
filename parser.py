@@ -4,75 +4,8 @@ import re
 import sys
 import getopt
 
-def generateRust(parsedStructs, parsedEnums):
-    indent = "    "
-    rust = "extern crate serde_json;\n"
-    rust += "extern crate serde;\n"
-    rust += "use std::error::Error;\n"
-    rust += "use serde::{Deserialize, Serialize};\n\n"
-
-
-    for enum in parsedEnums:
-        rust += "#[derive(Debug, Serialize, Deserialize, Copy, Clone)]\npub enum "+enum+"{\n"
-        data = parsedEnums[enum]
-
-        for t in data:
-            rust += ("    " + t + "=" + data[t]+",\n")
-
-        rust += "}\n\n"
-
-        rust += "pub fn translate_" + enum.lower() + "_from_int(input: u32) -> Result<"+enum+", Box<dyn Error>> {\n"
-
-        rust += indent+"match input {\n"
-        
-        for t in data:
-            rust += indent + indent + data[t] + "=> Ok("+enum+"::"+t+"),\n"
-
-        rust += indent + indent + "_ => return Err(Box::new(std::io::Error::new(std::io::ErrorKind::NotFound, \"Unknown" + enum +"\")))\n"
-
-        rust += indent+"}\n}\n\n"
-
-
-
-    rust += "#[derive(Debug)]\npub enum MessageUniqueId {\n"
-
-    for struct in parsedStructs:
-        rust += "    " + struct.name+"UniqueId,\n"
-    rust += "}\n\n"
-
-    rust += "pub trait Message {\n"+indent+"fn get_unique_id_dyn(&self) -> MessageUniqueId;\n"+ indent+"fn to_json(&self) -> std::result::Result<std::string::String, serde_json::Error>;\n"+indent+"fn get_topic_dyn(&self) -> std::string::String;\n}\n\n"
-
-    rust += "pub trait StaticMessageInfo {\n"+indent+"fn get_unique_id() -> MessageUniqueId;\n"+ indent+"fn get_topic() -> std::string::String;\n}\n\n"
-
-    for struct in parsedStructs:
-        rust = rust+struct.toRustStruct()
-        rust += "\n"
-        rust += "impl Message for "+struct.name+" {\n"
-        rust += "    #[inline]\n"
-        rust += "    fn get_unique_id_dyn(&self) -> MessageUniqueId {\n"
-        rust += "        MessageUniqueId::"+struct.name+"UniqueId\n"
-        rust += "    }\n"
-        rust += "    fn to_json(&self) -> std::result::Result<std::string::String, serde_json::Error> {\n"
-        rust += "        serde_json::to_string(&self)\n"
-        rust += "    }\n"
-        rust += "    fn get_topic_dyn(&self) -> std::string::String {\n"
-        rust += "        return \""+struct.topic+"\".to_string();\n"
-        rust += "    }\n"
-        rust += "}\n"
-        rust += "\n"
-        rust += "impl StaticMessageInfo for " + struct.name + " {\n"
-        rust += "    #[inline]\n"
-        rust += "    fn get_unique_id() -> MessageUniqueId {\n"
-        rust += "        MessageUniqueId::" + struct.name + "UniqueId\n"
-        rust += "    }\n"
-        rust += "    fn get_topic() -> std::string::String {\n"
-        rust += "        return \"" + struct.topic + "\".to_string();\n"
-        rust += "    }\n"
-        rust += "}\n"
-        rust += "\n"
-
-    return rust
-
+from language_specific.rust_generator import generate_rust
+from language_specific.python_generator import generate_python
 def parse(inputfile):
 
     starttag = "structdef "
@@ -176,7 +109,10 @@ for opt, arg in opts:
 
 if len(inputfile) == 0 or len(outputfile) == 0 or len(language) == 0:
     print('Usage: parser.py -l <language:cpp or rust> -d <definitionfile> -o <outputfile>')
-    sys.exit()
+    #sys.exit()
+    inputfile = "test_definitions.txt"
+    outputfile = "test_output.py"
+    language = "python"
 
 print(inputfile)
 print(outputfile)
@@ -184,11 +120,10 @@ print(language)
 
 parsedStructs, parsedEnums = parse(inputfile)
 
-rust = generateRust(parsedStructs, parsedEnums)
+rust = generate_python(parsedStructs, parsedEnums)
 
-print(rust)
-
-sys.exit()
+with open(outputfile, "w") as fh:
+    fh.write(rust)
 
 
 
@@ -304,9 +239,6 @@ if False:
     kotlin = kotlin+"}\n\n"
 
 
-
-
-print(rust)
 
 #print(parsed)
 #print(factory)
