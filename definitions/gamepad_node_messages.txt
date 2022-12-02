@@ -1,0 +1,11 @@
+structdef ContinuousGamepadButton
+gamepad/continuous
+string button_name
+int32 value
+endstructdef
+
+structdef DiscreteGamepadButton
+gamepad/discrete
+string button_name
+string value
+endstructdef

@@ -1,0 +1,85 @@
+enumdef BleMessageType
+HubProperties:0x01
+PortInformationRequest:0x21
+PortInputFormatSetup:0x41
+PortOutputCommand:0x81
+PortOutputCommandFeedback:0x82
+PortValue:0x45
+HubAttached:0x04
+endenumdef
+
+enumdef Port
+A:0
+B:1
+C:2
+D:3
+endenumdef
+
+structdef SetMotorPwm
+brickcontrol/motor/pwm
+int8 pwm
+enum:Port port
+endstructdef
+
+structdef SetMotorSpeed
+brickcontrol/motor/set_speed
+int8 pwm
+enum:Port port
+uint8 max_power
+endstructdef
+
+structdef MotorGoToPosition
+brickcontrol/motor/go_to_position
+int8 pwm
+enum:Port port
+uint8 max_power
+int32 target_angle
+endstructdef
+
+structdef MotorCommandFeedback
+brickcontrol/motor/output/command_feedback
+enum:Port port
+uint8 flags
+endstructdef
+
+structdef EnableModeUpdates
+brickcontrol/generic/set_mode_update
+enum:Port port
+uint8 mode
+uint8 notifications_enabled
+uint32 delta
+endstructdef
+
+structdef MotorPositionUpdate
+brickcontrol/motor/output/position_update
+int32 position
+enum:Port port
+endstructdef
+
+structdef RequestBatteryStatus
+brickcontrol/battery/request_status
+endstructdef
+
+structdef BatteryStatus
+brickcontrol/battery/status
+uint8 charging_state
+endstructdef
+
+structdef AttachmentInfo
+unused
+uint32 type_id
+int32 hw_rev
+int32 sw_rev
+endstructdef
+
+structdef AttachedIo
+brickcontrol/io/connection_update
+uint8 port_id
+uint8 event
+vector:struct:AttachmentInfo info
+endstructdef
+
+structdef PortInformationRequest
+brickcontrol/generic/read_port
+uint8 port_id
+endstructdef

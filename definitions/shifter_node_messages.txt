@@ -1,0 +1,16 @@
+structdef shifter_calibrate
+shifter/calibrate
+endstructdef
+
+structdef shifter_shift
+shifter/shift
+int8 gear
+endstructdef
+
+structdef shifter_shift_up
+shifter/shift_up
+endstructdef
+
+structdef shifter_shift_down
+shifter/shift_down
+endstructdef
