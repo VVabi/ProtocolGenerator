@@ -17,3 +17,16 @@ uint32 a
 int8 b
 enum:Port port
 endstructdef
+
+structdef test_substruct
+bar/foo
+uint32 x
+int8 y
+struct:test_struct some_struct
+endstructdef
+
+structdef test_array
+bar/fooo
+vector:uint32 x
+vector:test_substruct data
+endstructdef

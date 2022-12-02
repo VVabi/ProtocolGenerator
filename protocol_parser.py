@@ -6,6 +6,24 @@ import getopt
 
 from language_specific.rust_generator import generate_rust
 from language_specific.python_generator import generate_python
+from output import *
+
+a = test_struct(3, 7)
+b = test_struct(5, 11)
+
+x = test_substruct(1, 2, a)
+y = test_substruct(-1, -5, b)
+
+z = test_array([6,8], [x,y])
+
+print(z.to_dict())
+
+r = test_array.from_dict(z.to_dict())
+
+k = r.to_dict()
+
+print(k)
+
 def parse(inputfile):
 
     starttag = "structdef "
@@ -107,12 +125,13 @@ for opt, arg in opts:
         language = arg
 
 
-if len(inputfile) == 0 or len(outputfile) == 0 or len(language) == 0:
-    print('Usage: parser.py -l <language:cpp or rust> -d <definitionfile> -o <outputfile>')
+#if len(inputfile) == 0 or len(outputfile) == 0 or len(language) == 0:
+    #print('Usage: parser.py -l <language:cpp or rust> -d <definitionfile> -o <outputfile>')
     #sys.exit()
-    inputfile = "test_definitions.txt"
-    outputfile = "test_output.py"
-    language = "python"
+
+inputfile = "test_definitions.txt"
+language  = "python"
+outputfile = "output.py"
 
 print(inputfile)
 print(outputfile)
@@ -120,10 +139,13 @@ print(language)
 
 parsedStructs, parsedEnums = parse(inputfile)
 
-rust = generate_python(parsedStructs, parsedEnums)
+if language == "python":
+    output = generate_python(parsedStructs, parsedEnums)
+elif language == "rust":
+    output = generate_rust(parsedStructs, parsedEnums)
 
 with open(outputfile, "w") as fh:
-    fh.write(rust)
+    fh.write(output)
 
 
 

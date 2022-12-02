@@ -10,6 +10,8 @@ class StructField:
     jsonfunctions = {"uint32": "asUInt()", "int32": "asInt()", "double": "asDouble()", "bool":"asBool", "uint8": "asByte()", "int8": "asByte()"}
     rustNames  = {"uint32": "u32", "int32": "i32", "double": "f64", "bool": "bool", "uint8": "u8", "int8": "i8"}
 
+    core_names = set(["uint32", "int32", "double", "bool", "uint8", "int8", "string"])
+
     def __init__(self, nm, tp, isvector):
         self.name = nm
         self.type = tp
