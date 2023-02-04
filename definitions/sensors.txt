@@ -1,0 +1,20 @@
+enumdef Port
+A:0
+B:1
+C:2
+D:3
+endenumdef
+
+
+structdef MotorTicks
+brickcontrol/sensor/motor_ticks
+enum:Port port
+int ticks
+endstructdef
+
+structdef MotorOdometry
+brickcontrol/sensor/motor_odometry
+vector:struct:MotorTicks motor_ticks
+endstructdef
+
+

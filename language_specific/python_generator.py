@@ -45,7 +45,7 @@ def generate_python_struct_code(parsed_struct):
     ret.append(f"{INDENT}def to_dict(self):")
     ret.append(f"{INDENT}{INDENT}ret = dict()")
     for field in parsed_struct.fields:
-        if field.isstruct():
+        if field.isstruct() and not field.isvector:
             ret.append(f"{INDENT}{INDENT}ret['{field.name}'] = self.{field.name}.to_dict()")
         elif field.isvector:
             ret.append(f"{INDENT}{INDENT}ret['{field.name}'] = []")
@@ -71,7 +71,7 @@ def generate_python_struct_code(parsed_struct):
     ret.append(f"{INDENT}def from_dict(input_dict):")
     
     for field in parsed_struct.fields:
-        if field.isstruct():
+        if field.isstruct() and not field.isvector:
             ret.append(f"{INDENT}{INDENT}{field.name} = {remove_prefix(field.type)}.from_dict(input_dict['{field.name}'])")
         elif field.isvector:
             ret.append(f"{INDENT}{INDENT}{field.name} = []")
@@ -80,7 +80,7 @@ def generate_python_struct_code(parsed_struct):
             if is_base_type:
                 ret.append(f"{INDENT}{INDENT}{INDENT}{field.name}.append(data_point)")
             else:
-                ret.append(f"{INDENT}{INDENT}{INDENT}{field.name}.append({field.type}.from_dict(data_point))")
+                ret.append(f"{INDENT}{INDENT}{INDENT}{field.name}.append({remove_prefix(field.type)}.from_dict(data_point))")
         elif field.isEnum():
             ret.append(f"{INDENT}{INDENT}{field.name} = {remove_prefix(field.type)}[input_dict['{field.name}']]")
         else:

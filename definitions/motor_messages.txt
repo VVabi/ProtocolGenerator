@@ -15,6 +15,12 @@ C:2
 D:3
 endenumdef
 
+
+structdef RegisterMotor
+brickcontrol/motor/register
+enum:Port port
+endstructdef
+
 structdef SetMotorPwm
 brickcontrol/motor/pwm
 int8 pwm
@@ -23,14 +29,14 @@ endstructdef
 
 structdef SetMotorSpeed
 brickcontrol/motor/set_speed
-int8 pwm
+int8 speed
 enum:Port port
 uint8 max_power
 endstructdef
 
 structdef MotorGoToPosition
 brickcontrol/motor/go_to_position
-int8 pwm
+int8 speed
 enum:Port port
 uint8 max_power
 int32 target_angle

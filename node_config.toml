@@ -5,6 +5,8 @@
     path = "ProtocolGenerator/definitions/motor_messages.txt"
 [definitions.shifter]
     path = "ProtocolGenerator/definitions/shifter_node_messages.txt"
+[definitions.sensors]
+    path = "ProtocolGenerator/definitions/sensors.txt"
 
 [path]
 base_path           = "/home/vabi/code/lego_robot"
@@ -14,7 +16,7 @@ base_path           = "/home/vabi/code/lego_robot"
     language        = "rust"
     dependencies    = ["motor"]
     target_path     = "brick-control/src/protocol"
-[nodes.gampad]
+[nodes.gamepad]
     language        = "python"
     dependencies    = ["gamepad"]
     target_path     = "gamepad_node/protocol"
@@ -22,3 +24,11 @@ base_path           = "/home/vabi/code/lego_robot"
     language        = "python"
     dependencies    = ["shifter", "gamepad", "motor"]
     target_path     = "shifter_node/protocol"
+[nodes.ev3]
+    language        = "python"
+    dependencies    = ["motor", "sensors"]
+    target_path     = "ev3_fw/protocol"
+[nodes.map_buldup]
+    language        = "python"
+    dependencies    = ["sensors"]
+    target_path     = "robot_map_buildup/protocol"
