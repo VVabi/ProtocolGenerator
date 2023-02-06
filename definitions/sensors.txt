@@ -17,4 +17,15 @@ brickcontrol/sensor/motor_odometry
 vector:struct:MotorTicks motor_ticks
 endstructdef
 
+structdef ProximityMeasurement
+brickcontrol/sensor/proximity_measurement
+int distance
+endstructdef
+
+structdef SensorMessage
+brickcontrol/sensor/inc_sensor_data
+int timestamp
+vector:double movement_vector
+struct:ProximityMeasurement proximity_measurement
+endstructdef
 
