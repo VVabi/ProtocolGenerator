@@ -27,6 +27,11 @@ int8 pwm
 enum:Port port
 endstructdef
 
+structdef SetMotorPwmMultiple
+brickcontrol/motor/pwm_multiple
+vector:struct:SetMotorPwm motor_pwms
+endstructdef
+
 structdef SetMotorSpeed
 brickcontrol/motor/set_speed
 int8 speed

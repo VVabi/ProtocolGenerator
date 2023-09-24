@@ -22,10 +22,17 @@ brickcontrol/sensor/proximity_measurement
 int distance
 endstructdef
 
+structdef HeadingMeasurement
+brickcontrol/sensor/heading
+double heading
+endstructdef
+
+
 structdef SensorMessage
 brickcontrol/sensor/inc_sensor_data
 int timestamp
 vector:double movement_vector
 struct:ProximityMeasurement proximity_measurement
+struct:HeadingMeasurement heading_measurement
 endstructdef
 
